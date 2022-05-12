@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 require("dotenv").config();
 //database connection
-require("../conduitApi/config/database").connect();
+require("../Conduit-api-/config/database").connect();
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");

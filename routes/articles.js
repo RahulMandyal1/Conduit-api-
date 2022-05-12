@@ -142,7 +142,7 @@ router.put("/:slug", async (req, res, next) => {
         .status(202)
         .json({ article: articleformat(updateArticle, id) });
     }
-    return res.status(500).json({ error: "sorry you are not authorized" });
+    return res.status(401).json({ error: "sorry you are not authorized" });
   } catch (error) {
     next(error);
   }
