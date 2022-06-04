@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "npm start ./bin/www"
+    "start": "npm start ./bin/www",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
