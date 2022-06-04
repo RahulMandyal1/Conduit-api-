@@ -1,15 +1,20 @@
 //Requiring all the packages
 const express = require("express");
-var createError = require('http-errors');
+var createError = require("http-errors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 require("dotenv").config();
 
 //database connectivity
-require("../Conduit-api-/config/database").connect();
+mongoose.connect(
+  `mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWD}@cluster0.v6x9g.mongodb.net/?retryWrites=true&w=majority`,
+  (err) => {
+    console.log(err ? err : "Connection is made sucessfully");
+  }
+);
 
-// Requiring all the routes 
+// Requiring all the routes
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const articleRouter = require("./routes/articles");
@@ -20,14 +25,14 @@ const profileRouter = require("./routes/profiles");
 //Instantiating the application
 const app = express();
 
-//all the middlewares 
+//all the middlewares
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-//using all the routes 
+//using all the routes
 app.use("/api/v1/", indexRouter);
 app.use("/api/v1/articles", articleRouter);
 app.use("/api/v1/users", usersRouter);
