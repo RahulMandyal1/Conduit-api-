@@ -4,10 +4,11 @@ const User = require("../models/users");
 const auth = require("../middlewares/auth");
 const formatData = require("../helpers/formatdata");
 let { userProfile, userJSON, articleformat } = formatData;
+
 //only verified users have access to these routes
 router.use(auth.isVerified);
 
-// get the current logged in user information
+// curren logged in user information(authenticated)
 router.get("/", async (req, res, next) => {
   try {
     let user = await User.findOne({ email: req.user.email });
@@ -17,7 +18,8 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// update current logged in user information
+
+// update current logged in user information(authenticated)
 router.put("/", async (req, res, next) => {
   try {
     let user = await User.findOneAndUpdate(

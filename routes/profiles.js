@@ -26,6 +26,7 @@ router.get(
 // only verified user have access to these routes
 router.use(auth.isVerified);
 
+
 //follow  the user
 router.get("/:username/follow", async (req, res, next) => {
   try {
@@ -58,6 +59,7 @@ router.get("/:username/follow", async (req, res, next) => {
   }
 });
 
+
 //unfollow the user
 router.delete("/:username/follow", async (req, res, next) => {
   try {
@@ -89,4 +91,5 @@ router.delete("/:username/follow", async (req, res, next) => {
     next(error);
   }
 });
+
 module.exports = router;

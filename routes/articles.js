@@ -9,6 +9,7 @@ const { route } = require(".");
 const { compareSync } = require("bcrypt");
 const { all } = require("express/lib/application");
 const formatData = require("../helpers/formatdata");
+
 let {
   userProfile,
   userJSON,
@@ -21,18 +22,18 @@ let {
 
 router.use(auth.optionalAuthorization);
 
-//feed section get only  the article which is posted by the
-//users whom you are following
-router.get("/feed", async (req, res, next) => {
-  console.log("coming inside the feed section ");
+//user feed get articles of users whom the user is following
+router.get("/feed",auth.isVerified, async (req, res, next) => {
   let limit = 10;
   let skip = 0;
+
   if (req.query.limit) {
     limit = req.params.limit;
   }
   if (req.query.offset) {
     skip = req.query.offset;
   }
+
   try {
     // Get all the followed user id
     let allusers = await User.findById(req.user.id).distinct("followingList");
@@ -46,13 +47,15 @@ router.get("/feed", async (req, res, next) => {
   }
 });
 
-// get the all articles of all the users  . Global feed
+// Global feed get all articles (optional authentication )
 router.get("/", async (req, res, next) => {
   let limit = 10;
   let skip = 0;
   let { tag, author, favourite } = req.query;
-  // in query form the database we will pass the filter Object
+
+  // in query form  we will pass filter to database a query
   const filter = {};
+
   if (tag) {
     filter.taglist = { $in: req.query.tag };
   }
@@ -66,6 +69,7 @@ router.get("/", async (req, res, next) => {
   if (skip) {
     skip = req.query.skip;
   }
+
   try {
     let articles = await Article.find(filter)
       .populate("author")
@@ -78,7 +82,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-//get a single article detail
+//get a single article detail(optional authentication)
 router.get("/:slug", async (req, res, next) => {
   try {
     let id = req.user.id;
@@ -102,7 +106,9 @@ router.post("/", async (req, res, next) => {
     let id = req.user.id;
     req.body.author = req.user.id;
     let article = await Article.create(req.body);
+
     // add this created article in the user document as well
+    
     let updateUser = await User.findByIdAndUpdate(
       req.user.id,
       {
@@ -117,16 +123,18 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// update article
+//Only user who creates article can update his article
 router.put("/:slug", async (req, res, next) => {
   let id = req.user.id;
   if (req.body.taglist) {
     req.body.taglist = req.body.taglist.split(",");
   }
+
   if (req.body.title) {
     req.body.slug = req.body.title + "_" + randomNumber();
     req.body.slug = req.body.slug.split(",").join("-");
   }
+
   try {
     let user = req.user.id;
     let article = await Article.findOne({ slug: req.params.slug });

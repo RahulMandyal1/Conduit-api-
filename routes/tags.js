@@ -5,7 +5,7 @@ let auth = require("../middlewares/auth");
 const User = require("../models/users");
 let Comment = require("../models/comment");
 
-// get the list of all the tags
+// get the list of all the tags (Optional Authentication)
 router.get("/", auth.optionalAuthorization, async (req, res) => {
   try {
     let alltags = await Article.find({}).distinct("taglist");
@@ -14,4 +14,5 @@ router.get("/", auth.optionalAuthorization, async (req, res) => {
     next(err);
   }
 });
+
 module.exports = router;
