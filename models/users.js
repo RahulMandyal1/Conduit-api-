@@ -12,10 +12,10 @@ let userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     bio: { type: String },
     avatar: { type: String },
-    followingList: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    followersList: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    myarticles: [{ type: Schema.Types.ObjectId, ref: "Article" }],
-    favouriteArticle: [{ type: Schema.Types.ObjectId, ref: "Article" }],
+    followingList: [{ type: Schema.Types.ObjectId, ref: "BlogUser" }],
+    followersList: [{ type: Schema.Types.ObjectId, ref: "BlogUser" }],
+    myarticles: [{ type: Schema.Types.ObjectId, ref: "BlogArticle" }],
+    favouriteArticle: [{ type: Schema.Types.ObjectId, ref: "BlogArticle" }],
   },
   { timestamps: true }
 );
@@ -46,5 +46,5 @@ userSchema.methods.signToken = function () {
       .json({ error: " an error occured while signing the token " });
   }
 };
-let User = mongoose.model("User", userSchema);
+let User = mongoose.model("BlogUser", userSchema);
 module.exports = User;

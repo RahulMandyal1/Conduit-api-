@@ -86,11 +86,9 @@ router.get("/", async (req, res, next) => {
 router.get("/:slug", async (req, res, next) => {
   try {
     let id = req.user.id;
-    console.log(" this is the slug", req.params.slug);
     let article = await Article.findOne({ slug: req.params.slug }).populate(
       "author"
     );
-    console.log("this is the article", article);
     res.status(201).json({ article: articleformat(article, id) });
   } catch (error) {
     next(error);
@@ -102,6 +100,9 @@ router.use(auth.isVerified);
 
 //create a article
 router.post("/", async (req, res, next) => {
+  if(req.body.taglist){
+    req.body.taglist = req.body.taglist.trim().split(",");
+  }
   try {
     let id = req.user.id;
     req.body.author = req.user.id;

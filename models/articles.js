@@ -11,10 +11,10 @@ let articleSchema = new Schema(
     body: { type: String, required: true },
     taglist: [{ type: String }],
     likes: { type: Number, default: 0 },
-    author: { type: Schema.Types.ObjectId, ref: "User" },
-    comments: [{ type: Schema.Types.ObjectId, ref: "Commment" }],
+    author: { type: Schema.Types.ObjectId, ref: "BlogUser" },
+    comments: [{ type: Schema.Types.ObjectId, ref: "BlogComment" }],
     favouritedCount: { type: Number, default: 0 },
-    favouriteList: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    favouriteList: [{ type: Schema.Types.ObjectId, ref: "BlogUser" }],
   },
   { timestamps: true }
 );
@@ -27,5 +27,5 @@ articleSchema.pre("save", function (next) {
 });
 
 
-let Article = mongoose.model("Article", articleSchema);
+let Article = mongoose.model("BlogArticle", articleSchema);
 module.exports = Article;
