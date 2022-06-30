@@ -1,5 +1,5 @@
 
-The example API is a social blogging site API (i.e. a Medium.com clone) called "Conduit Api". View or use this API : 
+This  API is a social blogging  site API (i.e. a Medium.com clone) called "Conduit Api". View or use this API :  http://conduitblogapp.herokuapp.com/
 See all the Endpoints below
 
 # Endpoints
